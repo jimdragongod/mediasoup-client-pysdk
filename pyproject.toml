@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "smcdk"
+version = "1.0.0"
+description = "mediasoup-client-pysdk, a simple mediasoup client development kit, i.e. 'smcdk', fork from pymediasoup and do more"
+authors = ["Jim DG <jimdragongod@126.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/jimdragongod/mediasoup-client-pysdk"
+
+[tool.poetry.dependencies]
+python = "^3.8.0"
+pydantic = "^1.8.1"
+aiortc = "^1.2.0"
+pyee = "^8.1.0"
+
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.812"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
