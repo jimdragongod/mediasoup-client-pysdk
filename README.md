@@ -14,7 +14,6 @@ mediasoup_client.close()
 ```
 more details, please see: examples/sdkApiDemo.py
 
-
 ## Why another mediasoup-client?( My Personal Option, for reference only)
 There are several official and unofficial client implementations, but they are not quick and easy to run on all OS's desktop, so are not suitable to be a general SDK: 
 1. official client with official dependency lib
@@ -27,6 +26,8 @@ There are several official and unofficial client implementations, but they are n
 pymediasoup is quite nice, but its API is a little hard to quick start as SDK
 
 ## Architecture & Design
+![image](resources/architecture.png)
+
 Mediasoup Client contains:
 - Mediasoup Signaler Interface: follow the semantics of mediasoup-demo/server
 - Loop Tasks & Listeners: to tackle signaler request and notification from server side
