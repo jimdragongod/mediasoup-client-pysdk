@@ -23,30 +23,31 @@ There are several official and unofficial client implementations, but they are n
 - mediasoup-broadcast-demo: it's quite hard to compile and link a libwebrtc dependency successfully on all OS platform, especially in China mainland's network environment
 
 2. no-official client
-pymediasoup is quite nice, but its API is a little hard to quick start as SDK
+- pymediasoup： it is quite nice, but its API is a little hard to quick start as SDK
 
 ## Architecture & Design
 ![image](resources/architecture.png)
 
-Mediasoup Client contains:
+### Mediasoup Client
+it contains:
 - Mediasoup Signaler Interface: follow the semantics of mediasoup-demo/server
 - Loop Tasks & Listeners: to tackle signaler request and notification from server side
 - Room and Peer: a group of simple APIs to be integrated to Listeners
 - Multimedia Runtime: a stateful mediasoup Device
 
-Business Domain Based Listener Design
+### Business Domain Based Listener Design
 There are several business domain in SDK design:
 Bandwidth, Peer, Producer, Consumer, DataConsumer, result in 2 request listeners
 and 5 notification listeners, which their Respective interesting events to listen and tackle
 1. Server Request
-Consumer Listener event: newConsumer
-DataConsumer Listener event: newDataConsumer
+- Consumer Listener event: newConsumer
+- DataConsumer Listener event: newDataConsumer
 2. Server Notification
-Bandwidth Listener event: downlinkBwe
-Peer Listener event: newPeer, peerClosed, peerDisplayNameChanged, activeSpeaker
-Producer Listener event: producerScore
-Consumer Listener event: consumerLayersChanged, consumerScore, consumerClosed, consumerPaused, consumerResumed
-DataConsumer Listener event: dataConsumerClosed
+- Bandwidth Listener event: downlinkBwe
+- Peer Listener event: newPeer, peerClosed, peerDisplayNameChanged, activeSpeaker
+- Producer Listener event: producerScore
+- Consumer Listener event: consumerLayersChanged, consumerScore, consumerClosed, consumerPaused, consumerResumed
+- DataConsumer Listener event: dataConsumerClosed
 
 ## Features
 To be an easy-to-use sdk for mediasoup client development
