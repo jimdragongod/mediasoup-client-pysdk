@@ -5,7 +5,7 @@ a simple-to-use, pure python sdk of [mediasoup](https://mediasoup.org/) client, 
 For the purpose of to be an easy-to-use SDK, smcdk API design focus mainly on high level, and for users who know little about the official mediasoup client API. 
 
 ```python
-from smcdk.api import *
+from smcdk import *
 
 mediasoup_client = MediasoupClient(...)
 mediasoup_client.joinRoom(...)

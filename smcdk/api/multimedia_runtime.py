@@ -5,9 +5,10 @@ from aiortc import VideoStreamTrack
 from aiortc.contrib.media import MediaPlayer, MediaBlackhole, MediaRecorder
 from aiortc.mediastreams import AudioStreamTrack
 
-from smcdk import Device, AiortcHandler
 from smcdk.consumer import Consumer
 from smcdk.data_consumer import DataConsumer
+from smcdk.device import Device
+from smcdk.handlers.aiortc_handler import AiortcHandler
 from smcdk.producer import Producer
 from smcdk.rtp_parameters import RtpCapabilities
 from smcdk.sctp_parameters import SctpCapabilities, SctpStreamParameters

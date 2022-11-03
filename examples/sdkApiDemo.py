@@ -2,7 +2,7 @@ import asyncio
 import logging
 from threading import Timer
 
-from smcdk.api import *
+from smcdk import *
 
 
 def test_player(mediasoup_client_instance):
