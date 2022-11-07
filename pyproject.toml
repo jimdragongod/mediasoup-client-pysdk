@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "smcdk"
-version = "1.0.0"
+version = "1.0.1"
 description = "mediasoup-client-pysdk, a simple mediasoup client development kit, i.e. 'smcdk', fork from pymediasoup and do more"
 authors = ["Jim DG <jimdragongod@126.com>"]
 license = "MIT"
