@@ -1,11 +1,12 @@
 import asyncio
-import logging
 from threading import Timer
+import sys
 
 from smcdk import *
 
 
 def test_player(mediasoup_client_instance):
+    print('player start...')
     mediasoup_client_instance.play()
 
 
@@ -16,13 +17,17 @@ def test_player(mediasoup_client_instance):
 # enable mic and webCam, the recording file will be generated at consumerConfig['recordDirectoryPath']/[roomId]
 if __name__ == '__main__':
     mediasoup_client = MediasoupClient()
-    loop = asyncio.get_event_loop()
+    if sys.version_info.major == 3 and sys.version_info.minor == 6:
+        loop = asyncio.get_event_loop()
+    else:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
     try:
         # mock play in another thread, after 5 seconds
         timer = Timer(interval=5.0, function=test_player, args=[mediasoup_client])
         timer.start()
 
-        logging.info('MediasoupClient start...')
+        print('MediasoupClient start...')
         loop.run_until_complete(
             mediasoup_client.joinRoom(
                 roomAddressInfo={
@@ -40,6 +45,7 @@ if __name__ == '__main__':
                 producerConfig={
                     # if True, play automatically after joining room
                     'autoProduce': False,
+                    # ensure that this media file exists
                     'mediaFilePath': 'D:/logs/video-audio-stereo.mp4',
                 },
                 consumerConfig={
@@ -48,6 +54,6 @@ if __name__ == '__main__':
                     'recordDirectoryPath': 'D:/logs'
                 }))
     except KeyboardInterrupt:
-        logging.info('MediasoupClient shutdown')
+        print('MediasoupClient shutdown')
     finally:
         loop.run_until_complete(mediasoup_client.close())
