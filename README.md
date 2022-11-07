@@ -12,7 +12,7 @@ mediasoup_client.joinRoom(...)
 mediasoup_client.play(...)
 mediasoup_client.close()
 ```
-more details, please see: examples/sdkApiDemo.py
+more details, please see: examples/sdkApiDemo.py at GitHub
 
 ## Why another mediasoup-client?( My Personal Option, for reference only)
 There are several official and unofficial client implementations, but they are not quick and easy to run on all OS's desktop, so are not suitable to be a general SDK: 
@@ -25,6 +25,26 @@ There are several official and unofficial client implementations, but they are n
 2. no-official client
 - pymediasoup： it is quite nice, but its API is a little hard to quick start as SDK
 
+## Install
+```bash
+pip3 install smcdk
+```
+
+Note: 
+
+1. on Linux && MacOS, please ensure that libopus's and libvpx's development files have been installed
+before doing the above pip install, because there is a building step after installing the dependent aiortc lib.
+e.g. 
+On Ubuntu：
+```bash
+sudo apt install libopus-dev, libvpx-dev
+```
+
+2. in order to run examples/sdkApiDemo.py with mediasoup-demo/server's protoo websocket sub-protocol at  GitHub, the websockets lib is also required:
+```
+pip3 install websockets
+```
+
 ## Architecture & Design
 ![image](resources/architecture.png)
 
@@ -32,7 +52,7 @@ There are several official and unofficial client implementations, but they are n
 it contains:
 - Mediasoup Signaler Interface: follow the semantics of mediasoup-demo/server
 - Loop Tasks & Listeners: to tackle signaler request and notification from server side
-- Room and Peer: a group of simple APIs to be integrated to Listeners
+- Room and Peer: a group of simple room information related APIs to be integrated to Listeners
 - Multimedia Runtime: a stateful mediasoup Device
 
 ### Business Domain Based Listener Design
@@ -52,7 +72,7 @@ and 5 notification listeners, which their Respective interesting events to liste
 ## Features
 To be an easy-to-use sdk for mediasoup client development
 - **quick to run**: as mentioned above
-- **all os platform friendly**: as mentioned above
+- **all os(Windows, Linux, macOS) platform friendly**: as mentioned above, I've tested on Windows 10, Ubuntu 22.04 LTS and macOS Catalina
 - **signaling pluggable**: based on the mediasoup's design goal of "signaling agnostic", 
     >Be signaling agnostic: do not mandate any signaling protocol.”
    
@@ -61,15 +81,17 @@ To be an easy-to-use sdk for mediasoup client development
     Besides the default built-in signaler, which is used to communicate with mediasoup-demo/server, 
     you can provide your own MediasoupSignalerInterface implementation to meet your requirement.
 - **listener customizable**: currently, you can customize 2 request listeners and 5 notification listeners 
+
 ## About Code Style
   You can see many Camel-Case-Style naming in my Python code, 
 e.g. "getRouterRtpCapabilities", not "get_router_rtp_capabilities".
   The reason is not only that I began my career as a Java developer since 2008,
 but also that I hope this SDK can be applied by those developers who use Python as a no-major language, 
 and developers who have learned mediasoup by its demo app & server.
-  Maybe sometime in the future, I'll change this naming to follow Python’s PEP8 rules.
+  Maybe sometime in the future, I'll change this naming style to follow Python’s PEP8 rules.
+
 ## LICENSE
 MIT
 
 ## Thanks
-special thanks to pymediasoup, mediasoup, and aiortc projects
+special thanks to [pymediasoup](https://github.com/skymaze/pymediasoup), [mediasoup](https://mediasoup.org/), and [aiortc](https://github.com/aiortc/aiortc) projects, they lay a solid foundation for the birth of smcdk.
