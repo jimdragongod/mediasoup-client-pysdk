@@ -1,13 +1,13 @@
 import asyncio
 import logging
 
-from smcdk.log import Logger
 from smcdk.api.mediasoup_signaler import MediasoupSignalerInterface, ProtooSignaler, MessageType, Request
 from smcdk.api.multimedia_runtime import MultimediaRuntime
 from smcdk.api.notification_listener import BandwidthNotificationListener, PeerNotificationListener, \
     ProducerNotificationListener, ConsumerNotificationListener, DataConsumerNotificationListener
 from smcdk.api.request_listener import ConsumerRequestListener, DataConsumerRequestListener
 from smcdk.api.room_peer import Room, Peer, PeerAppData
+from smcdk.log import Logger
 
 # logger of module level
 logger = Logger.getLogger(enable_console=True, level=logging.WARN, log_file_path=None)
@@ -189,16 +189,16 @@ class MediasoupClient:
         create loop tasks
         '''
         bandwidthNotificationLoop = self._loop.create_task(
-            self._bandwidthNotificationListener.runLoop(asyncio.Queue(loop=self._loop)))
+            self._bandwidthNotificationListener.runLoop(asyncio.Queue()), name='BandwidthNotificationListener')
         peerNotificationLoop = self._loop.create_task(
-            self._peerNotificationListener.runLoop(asyncio.Queue(loop=self._loop)))
+            self._peerNotificationListener.runLoop(asyncio.Queue()), name='PeerNotificationListener')
         producerNotificationLoop = self._loop.create_task(
-            self._producerNotificationListener.runLoop(asyncio.Queue(loop=self._loop)))
+            self._producerNotificationListener.runLoop(asyncio.Queue()), name='ProducerNotificationListener')
         consumerNotificationLoop = self._loop.create_task(
-            self._consumerNotificationListener.runLoop(asyncio.Queue(loop=self._loop)))
+            self._consumerNotificationListener.runLoop(asyncio.Queue()), name='ConsumerNotificationListener')
         dataConsumerNotificationLoop = self._loop.create_task(
-            self._dataConsumerNotificationListener.runLoop(asyncio.Queue(loop=self._loop)))
-        severEventLoop = self._loop.create_task(self._serverEventLoop())
+            self._dataConsumerNotificationListener.runLoop(asyncio.Queue()), name='DataConsumerNotificationListener')
+        severEventLoop = self._loop.create_task(self._serverEventLoop(), name='ServerEventListener')
         self._loopTasks = [severEventLoop, bandwidthNotificationLoop, peerNotificationLoop, producerNotificationLoop,
                            consumerNotificationLoop, dataConsumerNotificationLoop]
         '''
@@ -226,7 +226,7 @@ class MediasoupClient:
             # self._loop.create_task(self._produce(kind='video', source='webCam'), name='produceTask_video_webCam')
             # self._loop.create_task(self._produce(kind='video', source='screenShare'),
             #                        name='produceTask_video_screenShare')
-            self._loop.create_task(self._produce())
+            self._loop.create_task(self._produce(), name='AutoProduceCoroutine')
         '''
         waiting loop tasks
         '''
@@ -235,7 +235,7 @@ class MediasoupClient:
 
     def play(self):
         if self._loop is not None:
-            return self._loop.create_task(self._produce())
+            return self._loop.create_task(self._produce(), name='PlayerCoroutine')
         else:
             logger.error(f'can\'t play, missing loop({self._loop})')
 
