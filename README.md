@@ -1,15 +1,38 @@
 # Mediasoup-Client-PySDK (aka "smcdk")
 a simple-to-use, pure python sdk of [mediasoup](https://mediasoup.org/) client, fork from [pymediasoup](https://github.com/skymaze/pymediasoup) and do more.
 
+## Install
+```bash
+pip3 install smcdk
+```
+
+Note:
+
+1. on Linux && MacOS, please ensure that libopus's and libvpx's development files have been installed
+   before doing the above pip install, because there is a building step after installing the dependent aiortc lib.
+   e.g.
+   On Ubuntu：
+```bash
+sudo apt install libopus-dev, libvpx-dev
+```
+
+2. in order to run examples/sdkApiDemo.py with mediasoup-demo/server's protoo websocket sub-protocol at  GitHub, the websockets lib is also required:
+```bash
+pip3 install websockets
+```
+
 ## Usage
 For the purpose of to be an easy-to-use SDK, smcdk API design focus mainly on high level, and for users who know little about the official mediasoup client API. 
 
 ```python
 from smcdk import *
-
+# customize your own signaler, request and notification listeners by passing parameters or use default
 mediasoup_client = MediasoupClient(...)
+# provide room & peer info, together with producer & consumer config  
 mediasoup_client.joinRoom(...)
+# start producing if the autoProduce of the producer config is set to false
 mediasoup_client.play(...)
+# please invoke the close method before stop the client
 mediasoup_client.close()
 ```
 more details, please see: examples/sdkApiDemo.py at GitHub
@@ -24,26 +47,6 @@ There are several official and unofficial client implementations, but they are n
 
 2. no-official client
 - pymediasoup： it is quite nice, but its API is a little hard to quick start as SDK
-
-## Install
-```bash
-pip3 install smcdk
-```
-
-Note: 
-
-1. on Linux && MacOS, please ensure that libopus's and libvpx's development files have been installed
-before doing the above pip install, because there is a building step after installing the dependent aiortc lib.
-e.g. 
-On Ubuntu：
-```bash
-sudo apt install libopus-dev, libvpx-dev
-```
-
-2. in order to run examples/sdkApiDemo.py with mediasoup-demo/server's protoo websocket sub-protocol at  GitHub, the websockets lib is also required:
-```
-pip3 install websockets
-```
 
 ## Architecture & Design
 ![image](resources/architecture.png)
