@@ -10,7 +10,7 @@ from smcdk.api.room_peer import Room, Peer, PeerAppData
 from smcdk.log import Logger
 
 # logger of module level
-logger = Logger.getLogger(enable_console=True, level=logging.WARN, log_file_path=None)
+logger = Logger.getLogger(level=logging.WARN, enable_console=True, log_file_path=None)
 
 
 class MediasoupClient:
@@ -350,6 +350,10 @@ class MediasoupClient:
         for peerInfo in message.data['peers']:
             self._room.addPeer(peerInfo['id'], data=PeerAppData(displayName=peerInfo['displayName'],
                                                                 device=peerInfo['device']))
+        if self._room.getPeerByPeerId(self._mePeer.peerId) is None:
+            self._room.addPeer(self._mePeer.peerId, self._mePeer)
+        else:
+            raise Exception(f'duplicate peerId of mePeer at room {self._room.roomId}')
 
     # enableShare
     async def _produce(self):
@@ -390,7 +394,7 @@ class MediasoupClient:
         protocol = message.data['protocol']
         appData = message.data['appData']
 
-        def onMessage(recvMessage):
+        def onMessage(recvMessage: str):
             logger.info('DataChannel {%s}-{%s}: {%s}', label, protocol, recvMessage)
             self._dataConsumerNotificationListener.onMessage(otherPeer, recvMessage, label, protocol, appData)
 
