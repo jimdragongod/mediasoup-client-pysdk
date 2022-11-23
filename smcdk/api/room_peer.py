@@ -1,7 +1,7 @@
 # avoid " unresolved reference" from Room
 # import
 
-from typing import Optional
+from typing import Optional,Union
 
 
 class PeerAppData:
@@ -60,6 +60,19 @@ class PeerAppData:
     def dataConsumers(self) -> list:
         return self._dataConsumers
 
+    def __str__(self):
+        return 'PeerAppData(' \
+               + 'displayName=' + self._displayName \
+               + ', device=' + str(self._device) \
+               + ', rtpCapabilities=' + str(self._rtpCapabilities) \
+               + ', sctpCapabilities=' + str(self._sctpCapabilities) \
+               + ', transports=' + str(self._transports) \
+               + ', producers=' + str(self._producers) \
+               + ', consumers=' + str(self._consumers) \
+               + ', dataProducers=' + str(self._dataProducers) \
+               + ', dataConsumers=' + str(self._dataConsumers) \
+               + ')'
+
 
 class Peer:
     # todo room: Room
@@ -88,6 +101,13 @@ class Peer:
     @data.setter
     def data(self, data: PeerAppData):
         self._data = data
+
+    def __str__(self):
+        return 'Peer(' \
+               + 'peerId=' + self._peerId \
+               + ', roomId=' + self._room.roomId \
+               + ', data=' + str(self._data) \
+               + ')'
 
 
 class Room:
@@ -148,8 +168,11 @@ class Room:
         else:
             return None
 
-    def addPeer(self, peerId: str, data: PeerAppData) -> Peer:
-        newPeer = Peer(room=self, peerId=peerId, data=data)
+    def addPeer(self, peerId: str, data: Union[PeerAppData, Peer]) -> Peer:
+        if isinstance(data, PeerAppData):
+            newPeer = Peer(room=self, peerId=peerId, data=data)
+        else:
+            newPeer = data
         self._peerIdToPeerMap[peerId] = newPeer
         return newPeer
 
@@ -157,3 +180,13 @@ class Room:
         toRemovePeer = self._peerIdToPeerMap[peerId]
         del self._peerIdToPeerMap[peerId]
         return toRemovePeer
+
+    def __str__(self):
+        return 'Room(' \
+               + 'serverAddress=' + self._serverAddress \
+               + ', roomId=' + self._roomId \
+               + ', peerIdToPeerMap=' + str(self._peerIdToPeerMap) \
+               + ', producerIdToPeerMap=' + str(self._producerIdToPeerMap) \
+               + ', consumerIdToPeerMap=' + str(self._consumerIdToPeerMap) \
+               + ', dataConsumerIdToPeerMap=' + str(self._dataConsumerIdToPeerMap) \
+               + ')'

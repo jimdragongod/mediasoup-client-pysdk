@@ -254,12 +254,25 @@ class SignalerMessage:
 
 
 class Request(SignalerMessage):
-    pass
+    def __str__(self):
+        return 'Request(' \
+               + 'requestId=' + str(self._requestId) \
+               + ', method=' + self._method \
+               + ', data=' + str(self._data) \
+               + ')'
 
 
 class Response(SignalerMessage):
-    pass
+    def __str__(self):
+        return 'Response(' \
+               + 'requestId=' + str(self._requestId) \
+               + ', data=' + str(self._data) \
+               + ')'
 
 
 class Notification(SignalerMessage):
-    pass
+    def __str__(self):
+        return 'Notification(' \
+               + 'method=' + self._method \
+               + ', data=' + str(self._data) \
+               + ')'
