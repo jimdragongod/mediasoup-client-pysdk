@@ -1,9 +1,14 @@
 import asyncio
+import logging
 from abc import ABCMeta, abstractmethod
 
+from smcdk.log import Logger
 from .mediasoup_listener import MediasoupListener
 from .mediasoup_signaler import MessageType, Notification
 from .room_peer import Peer, PeerAppData
+
+# logger of module level
+logger = Logger.getLogger(level=logging.INFO, enable_console=True, log_file_path=None)
 
 
 class QueuedNotificationListener(MediasoupListener, metaclass=ABCMeta):
@@ -54,8 +59,7 @@ class BandwidthNotificationListener(QueuedNotificationListener):
 
     # high frequency
     async def onDownlinkBwe(self, message: Notification):
-        # print(f'onDownlinkBwe, message.data:{message.data}')
-        pass
+        logger.debug('notification: %s', message)
 
 
 class PeerNotificationListener(QueuedNotificationListener):
@@ -70,8 +74,6 @@ class PeerNotificationListener(QueuedNotificationListener):
             message = await self.dequeue()
             if message.method == MessageType.SERVER_NOTIFICATION_activeSpeaker.value:
                 speakPeer = self.mePeer.room.getPeerByPeerId(message.data['peerId'])
-                if message.data['peerId'] is not None:
-                    speakPeer = self.mePeer.room.getPeerByPeerId(message.data['peerId'])
                 await self.onActiveSpeaker(message, speakPeer)
             elif message.method == MessageType.SERVER_NOTIFICATION_newPeer.value:
                 newPeer = self.mePeer.room.addPeer(peerId=message.data['id'],
@@ -83,23 +85,23 @@ class PeerNotificationListener(QueuedNotificationListener):
                 otherPeer.data.displayName = message.data['displayName']
                 await self.onPeerDisplayNameChanged(message, otherPeer)
             elif message.method == MessageType.SERVER_NOTIFICATION_peerClosed.value:
-                removedPeer = self.mePeer.room.removePeer(message.data['peerId'])
-                await self.onPeerClosed(message, removedPeer)
+                closedPeer = self.mePeer.room.removePeer(message.data['peerId'])
+                await self.onPeerClosed(message, closedPeer)
             else:
                 pass
 
     async def onNewPeer(self, message: Notification, newPeer: Peer):
-        pass
+        logger.debug('notification: %s, newPeer: %s', message, newPeer)
 
     # high frequency
     async def onActiveSpeaker(self, message: Notification, speakPeer: Peer):
-        pass
+        logger.debug('notification: %s, speakPeer: %s', message, speakPeer)
 
     async def onPeerDisplayNameChanged(self, message: Notification, otherPeer: Peer):
-        pass
+        logger.debug('notification: %s, otherPeer: %s', message, otherPeer)
 
-    async def onPeerClosed(self, message: Notification, removedPeer: Peer):
-        pass
+    async def onPeerClosed(self, message: Notification, closedPeer: Peer):
+        logger.debug('notification: %s, closedPeer: %s', message, closedPeer)
 
 
 class ProducerNotificationListener(QueuedNotificationListener):
@@ -119,7 +121,7 @@ class ProducerNotificationListener(QueuedNotificationListener):
 
     # high frequency
     async def onProducerScore(self, message: Notification):
-        pass
+        logger.debug('notification: %s', message)
 
 
 class ConsumerNotificationListener(QueuedNotificationListener):
@@ -147,20 +149,20 @@ class ConsumerNotificationListener(QueuedNotificationListener):
                 pass
 
     async def onConsumerLayersChanged(self, message: Notification, otherPeer: Peer):
-        pass
+        logger.debug('notification: %s, otherPeer: %s', message, otherPeer)
 
     # high frequency
     async def onConsumerScore(self, message: Notification, otherPeer: Peer):
-        pass
+        logger.debug('notification: %s, otherPeer: %s', message, otherPeer)
 
     async def onConsumerPaused(self, message: Notification, otherPeer: Peer):
-        pass
+        logger.debug('notification: %s, otherPeer: %s', message, otherPeer)
 
     async def onConsumerResumed(self, message: Notification, otherPeer: Peer):
-        pass
+        logger.debug('notification: %s, otherPeer: %s', message, otherPeer)
 
     async def onConsumerClosed(self, message: Notification, otherPeer: Peer):
-        pass
+        logger.debug('notification: %s, otherPeer: %s', message, otherPeer)
 
 
 class DataConsumerNotificationListener(QueuedNotificationListener):
@@ -180,8 +182,8 @@ class DataConsumerNotificationListener(QueuedNotificationListener):
                 pass
 
     async def onDataConsumerClosed(self, message: Notification, otherPeer: Peer):
-        pass
+        logger.debug('notification: %s, otherPeer: %s', message, otherPeer)
 
-    def onMessage(self, otherPeer: Peer, message, label, protocol, appData):
-        # print(f'DataChannel from {otherPeer}, {label}-{protocol}: {message}, appData:{appData}')
-        pass
+    def onMessage(self, otherPeer: Peer, message: str, label, protocol, appData):
+        logger.debug('message from %s: %s, label:%s, protocol: %s, appData: %s',
+                    otherPeer, message, label, protocol, appData)
