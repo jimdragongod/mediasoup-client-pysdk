@@ -3,7 +3,7 @@ import logging
 
 class Logger:
     @staticmethod
-    def getLogger(enable_console, log_file_path, level):
+    def getLogger(level, enable_console, log_file_path):
         logger = logging.getLogger()
         logger.setLevel(level)
         # 日志格式
