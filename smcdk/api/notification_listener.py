@@ -8,7 +8,7 @@ from .mediasoup_signaler import MessageType, Notification
 from .room_peer import Peer, PeerAppData
 
 # logger of module level
-logger = Logger.getLogger(level=logging.INFO, enable_console=True, log_file_path=None)
+logger = Logger.getLogger(__name__)
 
 
 class QueuedNotificationListener(MediasoupListener, metaclass=ABCMeta):
@@ -186,4 +186,4 @@ class DataConsumerNotificationListener(QueuedNotificationListener):
 
     def onMessage(self, otherPeer: Peer, message: str, label, protocol, appData):
         logger.debug('message from %s: %s, label:%s, protocol: %s, appData: %s',
-                    otherPeer, message, label, protocol, appData)
+                     otherPeer, message, label, protocol, appData)

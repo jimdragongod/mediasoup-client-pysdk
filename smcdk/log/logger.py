@@ -3,23 +3,32 @@ import logging
 
 class Logger:
     @staticmethod
-    def getLogger(level, enable_console, log_file_path):
-        logger = logging.getLogger()
+    def getLogger(module_name: str, level=logging.WARNING, enable_console=True, log_file_path=None):
+        """
+        This logger factory method is only for internal use.
+        e.g.
+        logger = Logger.getLogger(__name__,level=logging.DEBUG,log_file_path='D:/logs/1/smcdk.log')
+        :param module_name:
+        :param level:
+        :param enable_console:
+        :param log_file_path:
+        :return:
+        """
+        logger = logging.getLogger(module_name)
         logger.setLevel(level)
-        # 日志格式
+        # set logger format
         formatter = logging.Formatter(
             "%(asctime)s -$- [%(threadName)s] -$- %(levelname)s -$- %(filename)s -$- %(funcName)s(%(lineno)d) -$- %(message)s")
 
         if enable_console:
-            # 建立一个stream handler来把日志打在CMD窗口上，级别为error以上
+            # console logger
             console_handler = logging.StreamHandler()
             console_handler.setLevel(level)
             console_handler.setFormatter(formatter)
-            # 将相应的handler添加在logger对象中
             logger.addHandler(console_handler)
 
         if log_file_path is not None:
-            # 建立一个filehandler来把日志记录在文件里，级别为debug以上
+            # file logger
             file_handler = logging.FileHandler(log_file_path)
             file_handler.setLevel(level)
             file_handler.setFormatter(formatter)

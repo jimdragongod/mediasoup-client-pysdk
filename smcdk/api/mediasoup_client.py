@@ -10,7 +10,7 @@ from smcdk.api.room_peer import Room, Peer, PeerAppData
 from smcdk.log import Logger
 
 # logger of module level
-logger = Logger.getLogger(level=logging.WARN, enable_console=True, log_file_path=None)
+logger = Logger.getLogger(__name__)
 
 
 class MediasoupClient:
@@ -203,12 +203,14 @@ class MediasoupClient:
                            consumerNotificationLoop, dataConsumerNotificationLoop]
         '''
         load device
+        signaling: getRouterRtpCapabilities
         '''
         await self._loadDeviceByRouterRtpCapabilities()
         if not (self._multimediaRuntime.canProduce or self._multimediaRuntime.canConsume):
             return
         '''
-        create sendTransport & recvTransport 
+        create sendTransport & recvTransport
+        signaling: createWebRtcTransport, twice for both direction
         '''
         if self._multimediaRuntime.canProduce:
             await self._createSendTransport()
@@ -216,6 +218,7 @@ class MediasoupClient:
             await self._createRecvTransport()
         '''
         formally join
+        signaling: join
         '''
         await self._joinFormally()
         '''

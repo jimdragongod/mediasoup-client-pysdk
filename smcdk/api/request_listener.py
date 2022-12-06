@@ -1,5 +1,4 @@
 import asyncio.coroutines
-import logging
 
 from smcdk.log import Logger
 from .mediasoup_listener import MediasoupListener
@@ -7,7 +6,7 @@ from .mediasoup_signaler import Request
 from .room_peer import Peer
 
 # logger of module level
-logger = Logger.getLogger(level=logging.INFO, enable_console=True, log_file_path=None)
+logger = Logger.getLogger(__name__)
 
 
 class ConsumerRequestListener(MediasoupListener):
