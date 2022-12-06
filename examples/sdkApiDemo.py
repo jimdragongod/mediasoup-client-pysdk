@@ -1,6 +1,6 @@
 import asyncio
-from threading import Timer
 import sys
+from threading import Timer
 
 from smcdk import *
 
