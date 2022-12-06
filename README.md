@@ -39,7 +39,7 @@ more details, please see: examples/sdkApiDemo.py at GitHub
 
 ## Why another mediasoup-client?( My Personal Option, for reference only)
 There are several official and unofficial client implementations, but they are not quick and easy to run on all OS's desktop, so are not suitable to be a general SDK: 
-1. official client with official dependency lib
+1. official client with corresponding dependency lib
 - mediasoup-demo/aiortc: because it is based on Unix Socket, so it can't run in Windows
 - mediasoup-demo/broadcasters: it is based on bash language, which is good at integrating command line tools, but is not good at developing new features
 - mediasoup-demo/app: it can only run in browsers, and Electron-like desktop environment with less disk space occupation, or run in Node.js with more space occupation because of the node_modules directory
@@ -73,17 +73,34 @@ and 5 notification listeners, which their Respective interesting events to liste
 - DataConsumer Listener event: dataConsumerClosed
 
 ## Features
-To be an easy-to-use sdk for mediasoup client development
-- **quick to run**: as mentioned above
-- **all os(Windows, Linux, macOS) platform friendly**: as mentioned above, I've tested on Windows 10, Ubuntu 22.04 LTS and macOS Catalina
-- **signaling pluggable**: based on the mediasoup's design goal of "signaling agnostic", 
-    >Be signaling agnostic: do not mandate any signaling protocol.”
-   
-    (sited from [mediasoup :: Overview](https://mediasoup.org/documentation/overview/)). 
-    smcdk provide an out-of-box ProtooSignaler furthermore. 
-    Besides the default built-in signaler, which is used to communicate with mediasoup-demo/server, 
-    you can provide your own MediasoupSignalerInterface implementation to meet your requirement.
-- **listener customizable**: currently, you can customize 2 request listeners and 5 notification listeners 
+To be an easy-to-use sdk for mediasoup client development, smcdk is
+- **1.friendly to both beginners and veterans**
+
+With smcdk's high level API, beginners can integrate it into their own app quite conveniently without the need to understand mediasoup's concept such as Device, Router, Transport, Producer, Consumer;
+Besides, smcdk also provide low level API, such as the Device, AiortcHandler, for veterans to conduct in-depth customization.
+
+- **2.quick to run**
+
+As mentioned above, it's easy to build without the libwebrtc dependency
+ 
+- **3.all os(Windows, Linux, macOS) platform friendly**
+
+As mentioned above, Without the implementation based on Unix Socket, smcdk is cross-platform.
+I've tested on Windows 10, Ubuntu 22.04 LTS and NacOS Catalina.
+
+- **4.signaling pluggable**: 
+
+Based on the mediasoup's design goal of "signaling agnostic", 
+>Be signaling agnostic: do not mandate any signaling protocol.”
+
+(sited from [mediasoup :: Overview](https://mediasoup.org/documentation/overview/)). 
+smcdk provide an out-of-box ProtooSignaler furthermore. 
+Besides the default built-in signaler, which is used to communicate with mediasoup-demo/server, 
+you can provide your own MediasoupSignalerInterface implementation to meet your requirement.
+
+- **5.listener customizable**
+
+Currently, you can customize 2 request listeners and 5 notification listeners 
 
 ## About Code Style
   You can see many Camel-Case-Style naming in my Python code, 
